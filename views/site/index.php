@@ -3,32 +3,25 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Countries of the World';
+
 ?>
 <div class="row">
+
+    <div class=" col-lg-10 col-md-10 col-sm-12 col-xs-12">
+        <h4><?= "Countries" ?></h4>
+    </div>
     <div class="col-lg-10 col-md-10 col-sm-12 col-xs-12 bhoechie-tab-container">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-2 bhoechie-tab-menu">
+        <div class="col-lg-4 col-md-3 col-sm-3 col-xs-2 bhoechie-tab-menu">
             <div class="list-group">
-                <a href="#" class="list-group-item active text-center certification windows"> <!--style="background-color:#008cce;-->
-                    <h3><i class="fa fa-windows"></i></h3><br/>Windows
+                <?php foreach ($countries as $country): ?>
+                <a href="#" data-id="<?= $country->id?>" class="list-group-item active certification windows">
+                    <h4><?= $country->title?></h4><br/><?= $country->text?>
                 </a>
-                <a href="#" class="list-group-item text-center windows-server">   <!--style="background-color:#2b3385;"-->
-                    <h3><i class="fa fa-windows"></i></h3><br/>Windows Server
-                </a>
-                <a href="#" class="list-group-item text-center office365">   <!--style="background-color:#ef1f26;"-->
-                    <h3><i class="fa fa-paperclip"></i></h3><br/>Office 365
-                </a>
-                <a href="#" class="list-group-item text-center certification sql">   <!-- style="background-color:#535a5a;"-->
-                    <h3><i class="fa fa-database"></i></h3><br/>SQL Server
-                </a>
-                <a href="#" class="list-group-item text-center azure" style="height:33.33%;">   <!-- style="background-color:#01aef0;"-->
-                    <h3 class="fa fa-cloud"></h3><br/>Azure
-                </a>
-                <a href="#" class="list-group-item text-center certification dev">   <!-- style="background-color:#613095;"-->
-                    <h3><i class="fa fa-code"></i></h3><br/>Development paths
-                </a>
+                <?php endforeach; ?>
+
             </div>
         </div>
-        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+        <div class="col-lg-8 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
             <!-- flight section -->
             <div class="bhoechie-tab-content active">
                 <center>
