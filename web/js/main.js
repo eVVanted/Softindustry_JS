@@ -15,6 +15,52 @@ $(document).ready(function() {
 
     function showCities(cities){
         $('#cities').html(cities);
+
+        $('#btn-add-city').click(function(){
+            // getForm();
+            getForm('/site/add','POST',{id:$('a.active').data('id')});
+
+        });
+    }
+
+    function showForm(form){
+        $('#add-city').html(form);
+        console.log('form');
+
+        $('#btn-cancel').click(function(){
+            getCities('/site/view','POST',{id:$('a.active').data('id')});
+
+        });
+        $('#btn-submit').click(function(){
+            var data = $('form').serialize();
+            $.ajax({
+                url: '/site/create',
+                type: 'POST',
+                data: data,
+                success: function(res){
+                    showCities(res);
+                },
+                error: function(){
+                    alert('Error!');
+                }
+            });
+
+        });
+    }
+
+    function getForm(url,type,data){
+        $.ajax({
+            url: url,
+            type: type,
+            data: data,
+            success: function(res){
+                if(!res) alert('Ошибка');
+                showForm(res);
+            },
+            error: function(){
+                alert('Error');
+            }
+        });
     }
 
     function getCities(url,type,data){
@@ -23,7 +69,7 @@ $(document).ready(function() {
             type: type,
             data: data,
             success: function(res){
-                // console.log(res);
+                if(!res) alert('Ошибка');
                 showCities(res);
             },
             error: function(){
@@ -31,5 +77,6 @@ $(document).ready(function() {
             }
         });
     }
+
 
 });

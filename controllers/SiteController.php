@@ -68,21 +68,43 @@ class SiteController extends Controller
 
     public function actionView()
     {
-
         if (Yii::$app->request->isAjax) {
-
             $data = Yii::$app->request->post();
-//            VarDumper::dump($data);
-
             $id = $data['id'];
-
-
-//        VarDumper::dump($name);
             $cities = City::find()->where(['country_id' => $id])->all();
-//            return json_encode($workers, JSON_UNESCAPED_UNICODE);
             $this->layout = 'alter';
             return $this->render('cities', compact('cities'));
         }
     }
+
+    public function actionAdd()
+    {
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $country_id = $data['id'];
+            $model = new City();
+            $model->country_id=$country_id;
+            $this->layout = 'alter';
+
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionCreate()
+    {
+        $model = new City();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $cities = City::find()->where(['country_id' =>$model->country_id])->all();
+            $this->layout = 'alter';
+            return $this->render('cities', compact('cities'));
+        }
+
+    }
+
+
+
 
 }

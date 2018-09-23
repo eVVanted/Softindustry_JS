@@ -28,9 +28,7 @@ $this->title = 'Countries of the World';
         </div>
 
         <div  class="city-list col-md-9 bhoechie-tab">
-            <div id="button">
-                <button type="button" class="btn btn-primary">Add City <i class="glyphicon glyphicon-plus"></i></button>
-            </div>
+
             <div id = "cities"></div>
 
         </div>
