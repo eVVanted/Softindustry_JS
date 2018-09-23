@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -102,6 +103,29 @@ class SiteController extends Controller
             return $this->render('cities', compact('cities'));
         }
 
+    }
+
+    public function actionUpdate()
+    {
+        if (Yii::$app->request->isAjax) {
+            $data = Yii::$app->request->post();
+            $id = $data['id'];
+            $model = $this->findModel($id);
+            $this->layout = 'alter';
+
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = City::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
 
