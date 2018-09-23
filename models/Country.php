@@ -53,4 +53,5 @@ class Country extends \yii\db\ActiveRecord
     {
         return $this->hasMany(City::className(), ['country_id' => 'id']);
     }
+
 }

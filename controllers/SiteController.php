@@ -2,10 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\City;
 use app\models\Country;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
+use yii\helpers\VarDumper;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
@@ -56,81 +58,31 @@ class SiteController extends Controller
         ];
     }
 
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
-//        return $this->render('index');
         $countries = Country::find()->indexBy('id')->all();
-
-
         return $this->render('index', [
             'countries' => $countries,
         ]);
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
+    public function actionView()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+
+        if (Yii::$app->request->isAjax) {
+
+            $data = Yii::$app->request->post();
+//            VarDumper::dump($data);
+
+            $id = $data['id'];
+
+
+//        VarDumper::dump($name);
+            $cities = City::find()->where(['country_id' => $id])->all();
+//            return json_encode($workers, JSON_UNESCAPED_UNICODE);
+            $this->layout = 'alter';
+            return $this->render('cities', compact('cities'));
         }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    /**
-     * Displays contact page.
-     *
-     * @return Response|string
-     */
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionAbout()
-    {
-        return $this->render('about');
-    }
 }
