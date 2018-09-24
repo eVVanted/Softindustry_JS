@@ -19,8 +19,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'desc')->textarea(['placeholder' => 'Description','rows' => 3])->label(false) ?>
 
     <div class="form-group">
-        <button type="button" id="btn-submit" class="submit btn btn-primary">Submit </button>
-        <button type="button" id="btn-cancel" class="btn btn-default">Cancel </button>
+        <button type="button" id="btn-submit" class="submit btn btn-primary city-submit">Submit </button>
+        <button type="button" id="btn-cancel" class="btn btn-default city-cancel">Cancel </button>
     </div>
 
     <?php ActiveForm::end(); ?>

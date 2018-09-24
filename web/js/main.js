@@ -18,17 +18,18 @@ $(document).ready(function() {
 
         $('#btn-add-city').click(function(){
             // getForm();
-            getForm('/site/add','POST',{id:$('a.active').data('id')});
+            getForm('/site/create','GET',{id:$('a.active').data('id')});
 
         });
 
         $('.glyphicon-remove').click(function(){
             console.log('delete');
+            deleteCity({id:$(this).data('id')});
         });
 
         $('.glyphicon-pencil').click(function(){
             console.log('update');
-            getUpdateForm('/site/update','POST',{id:$(this).data('id')},$(this).data('id'));
+            getUpdateForm('/site/update','GET',{id:$(this).data('id')},$(this).data('id'));
         });
 
     }
@@ -37,14 +38,15 @@ $(document).ready(function() {
         $('#add-city').html(form);
         console.log('form');
 
-        $('#btn-cancel').click(function(){
+        $('div.city-form').find(".city-cancel").click(function(){
             getCities('/site/view','POST',{id:$('a.active').data('id')});
 
         });
-        $('#btn-submit').click(function(){
+        $('div.city-form').find(".city-submit").click(function(){
+            var url = $('form').prop('action');
             var data = $('form').serialize();
             $.ajax({
-                url: '/site/create',
+                url: url,
                 type: 'POST',
                 data: data,
                 success: function(res){
@@ -62,14 +64,15 @@ $(document).ready(function() {
         $('#'+id).html(form);
         console.log('form');
 
-        $('#btn-cancel').click(function(){
+        $('div.city-update').find(".city-cancel").click(function(){
             getCities('/site/view','POST',{id:$('a.active').data('id')});
 
         });
-        $('#btn-submit').click(function(){
+        $('div.city-update').find(".city-submit").click(function(){
+            var url = $('form').prop('action');
             var data = $('form').serialize();
             $.ajax({
-                url: '/site/create',
+                url: url,
                 type: 'POST',
                 data: data,
                 success: function(res){
@@ -128,6 +131,21 @@ $(document).ready(function() {
                 alert('Error!');
             }
         });
+    }
+
+    function deleteCity(data){
+        $.ajax({
+            url: '/site/delete',
+            type: 'POST',
+            data: data,
+            success: function(res){
+                showCities(res);
+            },
+            error: function(){
+                alert('Error!');
+            }
+        });
+
     }
 
 

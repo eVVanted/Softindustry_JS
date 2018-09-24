@@ -78,22 +78,8 @@ class SiteController extends Controller
         }
     }
 
-    public function actionAdd()
-    {
-        if (Yii::$app->request->isAjax) {
-            $data = Yii::$app->request->post();
-            $country_id = $data['id'];
-            $model = new City();
-            $model->country_id=$country_id;
-            $this->layout = 'alter';
 
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionCreate()
+    public function actionCreate($id)
     {
         $model = new City();
 
@@ -102,20 +88,42 @@ class SiteController extends Controller
             $this->layout = 'alter';
             return $this->render('cities', compact('cities'));
         }
+        $model->country_id=$id;
+        $this->layout = 'alter';
+        return $this->render('create', [
+            'model' => $model,
+        ]);
 
     }
 
-    public function actionUpdate()
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $cities = City::find()->where(['country_id' =>$model->country_id])->all();
+            $this->layout = 'alter';
+            return $this->render('cities', compact('cities'));
+        }
+        $this->layout = 'alter';
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionDelete()
     {
         if (Yii::$app->request->isAjax) {
             $data = Yii::$app->request->post();
             $id = $data['id'];
-            $model = $this->findModel($id);
-            $this->layout = 'alter';
 
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            $model = $this->findModel($id);
+            $country_id = $model->country_id;
+            $model->delete();
+            $cities = City::find()->where(['country_id' => $country_id])->all();
+            $this->layout = 'alter';
+            return $this->render('cities', compact('cities'));
         }
     }
 
