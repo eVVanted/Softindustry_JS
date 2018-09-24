@@ -7,90 +7,63 @@ $(document).ready(function() {
         var index = $(this).index();
         $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
         $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+        getCities({id:id});
 
-        getCities('/site/view','POST',{id:id});
     });
 
-    getCities('/site/view','POST',{id:$('a.active').data('id')});
+    getCities({id:$('a.active').data('id')});
+
+    $('body').on('click', '#btn-add-city', function(){
+        getForm({id:$('a.active').data('id')});
+    });
+
+    $('body').on('click', '.glyphicon-remove',function(){
+        deleteCity({id:$(this).data('id')});
+    });
+
+    $('body').on('click', '.glyphicon-pencil',function(){
+        getUpdateForm({id:$(this).data('id')},$(this).data('id'));
+    });
+
+    $('body').on('click', '.city-cancel',function(){
+        getCities({id:$('a.active').data('id')});
+
+    });
+
+    $('body').on('click', '.city-submit',function(){
+        var url = $('form').prop('action');
+        var data = $('form').serialize();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            success: function(res){
+                showCities(res);
+            },
+            error: function(){
+                alert('Error!');
+            }
+        });
+
+    });
 
     function showCities(cities){
         $('#cities').html(cities);
-
-        $('#btn-add-city').click(function(){
-            // getForm();
-            getForm('/site/create','GET',{id:$('a.active').data('id')});
-
-        });
-
-        $('.glyphicon-remove').click(function(){
-            console.log('delete');
-            deleteCity({id:$(this).data('id')});
-        });
-
-        $('.glyphicon-pencil').click(function(){
-            console.log('update');
-            getUpdateForm('/site/update','GET',{id:$(this).data('id')},$(this).data('id'));
-        });
-
     }
 
     function showForm(form){
         $('#add-city').html(form);
-        console.log('form');
-
-        $('div.city-form').find(".city-cancel").click(function(){
-            getCities('/site/view','POST',{id:$('a.active').data('id')});
-
-        });
-        $('div.city-form').find(".city-submit").click(function(){
-            var url = $('form').prop('action');
-            var data = $('form').serialize();
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                success: function(res){
-                    showCities(res);
-                },
-                error: function(){
-                    alert('Error!');
-                }
-            });
-
-        });
     }
 
     function showUpdateForm(form, id){
         $('#'+id).html(form);
-        console.log('form');
-
-        $('div.city-update').find(".city-cancel").click(function(){
-            getCities('/site/view','POST',{id:$('a.active').data('id')});
-
-        });
-        $('div.city-update').find(".city-submit").click(function(){
-            var url = $('form').prop('action');
-            var data = $('form').serialize();
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                success: function(res){
-                    showCities(res);
-                },
-                error: function(){
-                    alert('Error!');
-                }
-            });
-
-        });
     }
 
-    function getForm(url,type,data){
-        getCities('/site/view','POST',{id:$('a.active').data('id')});
+    function getForm(data){
+        getCities({id:$('a.active').data('id')});
         $.ajax({
-            url: url,
-            type: type,
+            url: '/site/create',
+            type: 'GET',
             data: data,
             success: function(res){
                 if(!res) alert('Ошибка');
@@ -102,11 +75,11 @@ $(document).ready(function() {
         });
     }
 
-    function getUpdateForm(url,type,data,id){
-        getCities('/site/view','POST',{id:$('a.active').data('id')});
+    function getUpdateForm(data,id){
+        getCities({id:$('a.active').data('id')});
         $.ajax({
-            url: url,
-            type: type,
+            url: '/site/update',
+            type: 'GET',
             data: data,
             success: function(res){
                 if(!res) alert('Ошибка');
@@ -118,10 +91,10 @@ $(document).ready(function() {
         });
     }
 
-    function getCities(url,type,data){
+    function getCities(data){
         $.ajax({
-            url: url,
-            type: type,
+            url: '/site/view',
+            type: 'POST',
             data: data,
             success: function(res){
                 if(!res) alert('Ошибка');
