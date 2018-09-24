@@ -46,16 +46,20 @@ a.navbar-brand {
   /*float: right;*/
 }
 
-.vertical-align {
-  display: flex;
-  align-items: center;
-}
+/*.vertical-align {*/
+  /*display: flex;*/
+  /*align-items: center;*/
+/*}*/
 .glyphicon-remove, .glyphicon-pencil {
   font-size: 20px;
 
   cursor: pointer
 
 }
-.city-update{
-  width:697px;
+
+form {
+  margin-right: 10px;
 }
+/*.city-update{*/
+  /*width:697px;*/
+/*}*/

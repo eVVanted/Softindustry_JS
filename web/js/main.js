@@ -84,6 +84,7 @@ $(document).ready(function() {
     }
 
     function getForm(url,type,data){
+        getCities('/site/view','POST',{id:$('a.active').data('id')});
         $.ajax({
             url: url,
             type: type,
@@ -99,6 +100,7 @@ $(document).ready(function() {
     }
 
     function getUpdateForm(url,type,data,id){
+        getCities('/site/view','POST',{id:$('a.active').data('id')});
         $.ajax({
             url: url,
             type: type,
